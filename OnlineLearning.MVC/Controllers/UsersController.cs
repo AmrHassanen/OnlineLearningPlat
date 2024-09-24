@@ -57,12 +57,10 @@ namespace OnlineLearning.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AddUserViewModel model)
         {
-            // Ensure that we only proceed if the model is valid
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
             // Check if at least one role is selected
             if (!model.Roles.Any(r => r.IsSelected))
             {
@@ -113,7 +111,66 @@ namespace OnlineLearning.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
 
+            if (user == null)
+                return NotFound();
+
+            var viewModel = new ProfileFormViewModel
+            {
+                Id = userId,
+                FullName = user.FullName,
+                UserName=user.UserName,
+                Email = user.Email
+
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ProfileFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+                return NotFound();
+
+            var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
+            
+            if(userWithSameEmail != null &&  userWithSameEmail.Id != model.Id)
+            {
+                ModelState.AddModelError("Email", "This Email Is already Token");
+                return View(model);
+            }
+
+            var userWithSameUserName = await _userManager.FindByNameAsync(model.UserName);
+
+
+            if (userWithSameUserName != null && userWithSameUserName.Id != model.Id)
+            {
+                ModelState.AddModelError("UserName", "This UserName Is already Token");
+                return View(model);
+            }
+
+            user.FullName = model.FullName;
+            user.Email = model.Email;
+            user.UserName =model.UserName;
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> ManageRoles(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<OnlineLearning.Entity.Entities.Course>
+
+@{
+    ViewBag.Title = "Available Courses";
+}
+
+<style>
+    .card {
+        background: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+        transition: transform 0.2s;
+        border-radius: 8px; /* Optional: rounded corners */
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+    .alert {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="text-center">Available Courses</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var course in Model)
+        {
+            <div class="col-12 col-md-4 mb-4">
+                <div class="card border-0 shadow-sm" style="background-color:wheat">
+                    <div class="card-body text-center">
+                        <h5 class="card-title font-weight-bold">Course: <strong>@course.Title</strong></h5>
+                        <p class="text-secondary">Instructor: @course.Instructor.FullName</p>
+                        <p class="text-muted">@course.StartDate.ToShortDateString() - @course.EndDate.ToShortDateString()</p>
+                        <form asp-action="Enroll" method="post" class="mt-2">
+                            <input type="hidden" name="courseId" value="@course.CourseId" />
+                            <button type="submit" class="btn btn-success">Enroll</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
