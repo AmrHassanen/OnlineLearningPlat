@@ -1,71 +1,40 @@
-﻿@model IEnumerable<OnlineLearning.Entity.Entities.Course>
+﻿@model IEnumerable<Course>
 
 @{
-    ViewBag.Title = "My Enrolled Courses";
+    ViewData["Title"] = "My Courses";
 }
 
-<style>
-    .container {
-        margin-top: 40px;
-    }
+<div class="container mt-4">
+    <h2>My Enrolled Courses</h2>
 
-    .card {
-        background: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
-        transition: transform 0.2s;
-        border-radius: 10px; /* Rounded corners */
-    }
-
-        .card:hover {
-            transform: scale(1.05); /* Enlarge on hover */
-        }
-
-    .card-title {
-        font-size: 1.5rem; /* Larger title */
-        font-weight: bold; /* Bold title */
-    }
-
-    .card-text {
-        font-size: 1rem; /* Standard text size */
-    }
-
-    .text-secondary {
-        font-style: italic; /* Italic for instructor name */
-    }
-
-    .text-muted {
-        font-size: 0.9rem; /* Smaller font size for date */
-    }
-
-    .no-courses {
-        text-align: center;
-        font-size: 1.2rem;
-        color: #6c757d; /* Muted text color */
-    }
-</style>
-
-<div class="container">
-    <h2 class="text-center mb-4">My Enrolled Courses</h2>
-
-    @if (!Model.Any())
+    @if (Model != null && Model.Any())
     {
-        <p class="no-courses">You are not enrolled in any courses.</p>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Instructor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@course.Title</td>
+                        <td>@course.Description</td>
+                        <td>@course.StartDate.ToShortDateString()</td>
+                        <td>@course.EndDate.ToShortDateString()</td>
+                        <td>@course.Instructor?.FullName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
     else
     {
-        <div class="row">
-            @foreach (var course in Model)
-            {
-                <div class="col-12 col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">@course.Title</h5>
-                            <p class="card-text">@course.Description</p>
-                            <p class="text-secondary">Instructor: @course.Instructor.FullName</p>
-                            <p class="text-muted">@course.StartDate.ToShortDateString() - @course.EndDate.ToShortDateString()</p>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+        <div class="alert alert-warning">You are not enrolled in any courses yet.</div>
     }
 </div>
