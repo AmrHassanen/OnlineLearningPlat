@@ -51,6 +51,16 @@ namespace OnlineLearning.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<IEnumerable<Course>> FilterCoursesAsync(string searchTerm)
+        {
+            // Normalize the search term to lower case for case-insensitive search
+            searchTerm = searchTerm?.ToLower();
+
+            return await _context.Courses
+                .Where(c => c.Title.ToLower().Contains(searchTerm) ||
+                             c.Description.ToLower().Contains(searchTerm)) // Search in both Title and Description
+                .ToListAsync();
+        }
     }
 
 }
