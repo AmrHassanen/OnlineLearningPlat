@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -123,8 +124,8 @@ namespace OnlineLearning.MVC.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 user.FullName = Input.FullName;
+                user.UserName = new MailAddress(Input.Email).User;
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
