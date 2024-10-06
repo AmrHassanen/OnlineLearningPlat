@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineLearning.Entity.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineLearning.Infrastructure.Config
 {
@@ -13,9 +8,8 @@ namespace OnlineLearning.Infrastructure.Config
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-
-            //PrimaryKey
-            builder.HasKey(x => x.CourseId);
+            // Primary Key
+            builder.HasKey(c => c.Id);  // Use Id, as CourseId is unnecessary
 
             // Title validation
             builder.Property(c => c.Title)
@@ -35,13 +29,14 @@ namespace OnlineLearning.Infrastructure.Config
 
             // Relationships
             builder.HasOne(c => c.Instructor)
-                .WithMany(u => u.CoursesTaught)
+                .WithMany(u => u.CoursesTaught)  // Instructor teaches multiple courses
                 .HasForeignKey(c => c.InstructorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
 
             builder.HasMany(c => c.Enrollments)
                 .WithOne(e => e.Course)
-                .HasForeignKey(e => e.CourseId);
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);  // Cascades delete if course is deleted
         }
     }
 }

@@ -14,7 +14,7 @@ namespace OnlineLearning.Infrastructure.Config
         public void Configure(EntityTypeBuilder<Enrollment> builder)
         {
             //PrimaryKey
-            builder.HasKey(p => p.EnrollmentId);
+            builder.HasKey(p => p.Id);
 
             // Enrollment Date validation
             builder.Property(e => e.EnrollmentDate)

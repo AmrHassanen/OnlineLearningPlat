@@ -27,6 +27,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+
+                        <!-- Admin Links -->
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -35,24 +37,37 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Users</a>
                             </li>
-                        }
-                        @if (User.IsInRole("Admin"))
-                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="Create">AddCourses</a>
+                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="Create">Add a Course</a>
                             </li>
                         }
+
+                        <!-- Student Links -->
                         @if (User.IsInRole("Student"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">Enrollments</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">
+                                    Available Courses
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Enrollments" asp-action="MyCourses">AllMyCourses</a>
+                                <a class="nav-link text-dark" asp-controller="Enrollments" asp-action="MyCourses">My Courses</a>
                             </li>
+                        }
+
+                        <!-- Instructor Links -->
+                        @if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="ManageCourses">Manage Courses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="InstructorCourses">Track Progress</a>
+                            </li>
+
                         }
                     </ul>
                     <!-- Move the login/logout partial to the end (right) of the navbar -->

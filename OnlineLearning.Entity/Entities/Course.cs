@@ -8,17 +8,22 @@ namespace OnlineLearning.Entity.Entities
 {
     public class Course
     {
-        public int CourseId { get; set; }
+        public int Id { get; set; }  
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        // Foreign key for the instructor
-        public string InstructorId { get; set; }
-        public ApplicationUser Instructor { get; set; }
+        public string InstructorId { get; set; }  
+        public ApplicationUser Instructor { get; set; }  
 
-        // Navigation properties
+        // Relationships
         public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<Assignment> Assignments { get; set; }
+
+        public ICollection<ProgressTracking> ProgressTrackings { get; set; }  
+
     }
 }
+
+

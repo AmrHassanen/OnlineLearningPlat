@@ -1,4 +1,5 @@
 ﻿using OnlineLearning.Entity.Entities;
+using OnlineLearning.Service.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace OnlineLearning.Service.Interfaces
         Task AddCourseAsync(Course course);
         Task UpdateCourseAsync(Course course);
         Task DeleteCourseAsync(int id);
+
+        Task AddAssignmentAsync(Assignment assignment);
+        Task<List<CourseEnrollmentViewModel>> GetCoursesWithEnrollmentCountAsync(string instructorId);
+
     }
 
 }
