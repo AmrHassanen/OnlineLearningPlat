@@ -19,9 +19,12 @@ namespace OnlineLearning.Web.Controllers
             _enrollmentService = enrollmentService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var courses = await _courseService.GetAllCoursesAsync();
+            var courses = string.IsNullOrWhiteSpace(searchString)
+                ? await _courseService.GetAllCoursesAsync()
+                : await _courseService.FilterCoursesAsync(searchString); // Ensure you have implemented FilterCoursesAsync
+
             return View(courses);
         }
 

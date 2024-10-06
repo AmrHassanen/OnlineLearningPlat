@@ -12,6 +12,7 @@ namespace OnlineLearning.Service.Interfaces
     {
         Task<IEnumerable<Course>> GetAllCoursesAsync();
         Task<Course> GetCourseByIdAsync(int id);
+        Task<IEnumerable<Course>> FilterCoursesAsync(string title);
         Task AddCourseAsync(Course course);
         Task UpdateCourseAsync(Course course);
         Task DeleteCourseAsync(int id);

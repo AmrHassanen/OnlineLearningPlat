@@ -1,60 +1,77 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OnlineLearning.MVC</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/BootsWatchStyle.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnlineLearning.MVC.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css">
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="https://th.bing.com/th/id/R.6d9ba82171b730ca48714f61dc5d8036?rik=obt2elz%2blOHAGg&pid=ImgRaw&r=0" alt="Logo" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 8px;" />
                     OnlineLearning
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav d-flex justify-content-center mx-auto">
                         <!-- Links centered in the navbar -->
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <!-- Admin Links -->
+                        <!-- Admin Sidebar -->
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Users" asp-action="Index">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Courses</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="Create">Add a Course</a>
-                            </li>
+                            <nav id="admin-sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                                <div class="position-sticky">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Roles" asp-action="Index">
+                                                <i class="bi bi-people-fill"></i>
+                                                Roles
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">
+                                                <i class="bi bi-person-fill"></i>
+                                                Users
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index">
+                                                <i class="bi bi-book"></i>
+                                                Courses
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Create">
+                                                <i class="bi bi-plus-circle"></i>
+                                                Add Course
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
                         }
-
+                        
                         <!-- Student Links -->
                         @if (User.IsInRole("Student"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">
-                                    Available Courses
-                                </a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Enrollments" asp-action="Index">Available Courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Enrollments" asp-action="MyCourses">My Courses</a>
+                                <a class="nav-link text-white" asp-controller="Enrollments" asp-action="MyCourses">My Courses</a>
                             </li>
                         }
 
@@ -62,12 +79,11 @@
                         @if (User.IsInRole("Instructor"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="ManageCourses">Manage Courses</a>
+                                <a class="nav-link text-white" asp-controller="Courses" asp-action="ManageCourses">Manage Courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Courses" asp-action="InstructorCourses">Track Progress</a>
+                                <a class="nav-link text-white" asp-controller="Courses" asp-action="InstructorCourses">Track Progress</a>
                             </li>
-
                         }
                     </ul>
                     <!-- Move the login/logout partial to the end (right) of the navbar -->
@@ -78,10 +94,55 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div class="container-fluid">
+        <div class="row">
+            @if (User.IsInRole("Admin"))
+            {
+                <!-- Sidebar for Admin -->
+                <nav id="admin-sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                    <div class="position-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" asp-area="" asp-controller="Roles" asp-action="Index">
+                                    <i class="bi bi-people-fill"></i>
+                                    Roles
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">
+                                    <i class="bi bi-person-fill"></i>
+                                    Users
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index">
+                                    <i class="bi bi-book"></i>
+                                    Courses
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Create">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Add Course
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- Main content for Admin (9-column width) -->
+                <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    @RenderBody()
+                </main>
+            }
+            else
+            {
+                <!-- Main content for non-admin users (Full-width) -->
+                <main role="main" class="col-12">
+                    @RenderBody()
+                </main>
+            }
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
@@ -99,4 +160,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
