@@ -28,13 +28,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+
+                        <!-- Student Links -->
                         @if (User.IsInRole("Student"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Enrollments" asp-action="Index">Enrollments</a>
+                                <a class="nav-link text-white" asp-area="" asp-controller="Enrollments" asp-action="Index">Available Courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Enrollments" asp-action="MyCourses">All My Courses</a>
+                                <a class="nav-link text-white" asp-controller="Enrollments" asp-action="MyCourses">My Courses</a>
+                            </li>
+                        }
+
+                        <!-- Instructor Links -->
+                        @if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Courses" asp-action="ManageCourses">Manage Courses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Courses" asp-action="InstructorCourses">Track Progress</a>
                             </li>
                         }
                     </ul>

@@ -12,13 +12,24 @@ namespace OnlineLearning.Infrastructure.Data
             : base(options)
         {
         }
+
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<ProgressTracking> ProgressTrackings { get; set; }
 
+        // Add this line to include Assignments
+        public DbSet<Assignment> Assignments { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.Entity<ProgressTracking>()
+          .HasOne(pt => pt.Assignment)
+          .WithMany(a => a.ProgressTrackings)
+          .HasForeignKey(pt => pt.AssignmentId)
+          .OnDelete(DeleteBehavior.Cascade);
             SeedRoles(builder);
             base.OnModelCreating(builder);
         }
@@ -32,4 +43,5 @@ namespace OnlineLearning.Infrastructure.Data
             );
         }
     }
+
 }

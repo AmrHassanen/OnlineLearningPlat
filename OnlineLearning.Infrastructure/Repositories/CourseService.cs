@@ -2,6 +2,7 @@
 using OnlineLearning.Entity.Entities;
 using OnlineLearning.Infrastructure.Data;
 using OnlineLearning.Service.Interfaces;
+using OnlineLearning.Service.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace OnlineLearning.Infrastructure.Repositories
         public async Task<Course> GetCourseByIdAsync(int id)
         {
             return await _context.Courses.Include(c => c.Instructor)
-                                         .FirstOrDefaultAsync(c => c.CourseId == id);
+                                         .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task AddCourseAsync(Course course)
@@ -51,6 +52,30 @@ namespace OnlineLearning.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<List<CourseEnrollmentViewModel>> GetCoursesWithEnrollmentCountAsync(string instructorId)
+        {
+            var courses = await _context.Courses
+                .Where(c => c.InstructorId == instructorId)
+                .Select(c => new CourseEnrollmentViewModel
+                {
+                    CourseId = c.Id,
+                    CourseTitle = c.Title,
+                    StudentCount = c.Enrollments.Count 
+                })
+                .ToListAsync();
+
+            return courses;
+        }
+
+
+        public async Task AddAssignmentAsync(Assignment assignment)
+        {
+            _context.Assignments.Add(assignment);
+            await _context.SaveChangesAsync();
+        }
+
+
         public async Task<IEnumerable<Course>> FilterCoursesAsync(string searchTerm)
         {
             // Normalize the search term to lower case for case-insensitive search

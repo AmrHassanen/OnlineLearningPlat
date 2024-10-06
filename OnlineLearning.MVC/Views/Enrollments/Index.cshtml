@@ -42,12 +42,12 @@
                     <td>@course.StartDate.ToShortDateString()</td>
                     <td>@course.EndDate.ToShortDateString()</td>
                     <td>
-                        <form asp-action="Enroll" method="post" asp-route-courseId="@course.CourseId" class="d-inline">
+                        <form asp-action="Enroll" method="post" asp-route-courseId="@course.Id" class="d-inline">
                             <button type="submit" class="btn btn-primary">Enroll</button>
                         </form>
 
                         <!-- Details Button -->
-                        <a asp-action="Details" asp-route-id="@course.CourseId" class="btn btn-info d-inline">Details</a>
+                        <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-info d-inline">Details</a>
                     </td>
                 </tr>
             }

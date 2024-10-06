@@ -9,11 +9,11 @@ using OnlineLearning.Infrastructure.Data;
 
 #nullable disable
 
-namespace OnlineLearning.MVC.Data.Migrations
+namespace OnlineLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240921093613_UpdateApplicationUserToAcceptProfilePicture")]
-    partial class UpdateApplicationUserToAcceptProfilePicture
+    [Migration("20241005170259_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,22 @@ namespace OnlineLearning.MVC.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "415280b7-cc99-4301-a845-71b2c24b4d81",
+                            Id = "9663b29b-2c94-45e7-9114-699a256c7d8d",
                             ConcurrencyStamp = "1",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "c022c63f-86e1-4b5c-ab84-b76884256040",
+                            Id = "a2ab5d0c-f805-41f4-bd81-9293e72b3976",
                             ConcurrencyStamp = "2",
                             Name = "Instructor",
                             NormalizedName = "INSTRUCTOR"
                         },
                         new
                         {
-                            Id = "7d276d82-48a3-4dbe-af76-f0a7e36c367b",
-                            ConcurrencyStamp = "2",
+                            Id = "ef95cf67-7d57-4b64-90e9-1dfd81ed7f68",
+                            ConcurrencyStamp = "3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -232,7 +232,6 @@ namespace OnlineLearning.MVC.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<byte[]>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -258,13 +257,39 @@ namespace OnlineLearning.MVC.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("OnlineLearning.Entity.Entities.Course", b =>
+            modelBuilder.Entity("OnlineLearning.Entity.Entities.Assignment", b =>
                 {
-                    b.Property<int>("CourseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Assignments");
+                });
+
+            modelBuilder.Entity("OnlineLearning.Entity.Entities.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -286,7 +311,7 @@ namespace OnlineLearning.MVC.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("CourseId");
+                    b.HasKey("Id");
 
                     b.HasIndex("InstructorId");
 
@@ -295,11 +320,11 @@ namespace OnlineLearning.MVC.Data.Migrations
 
             modelBuilder.Entity("OnlineLearning.Entity.Entities.Enrollment", b =>
                 {
-                    b.Property<int>("EnrollmentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -311,7 +336,7 @@ namespace OnlineLearning.MVC.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("EnrollmentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
@@ -322,27 +347,38 @@ namespace OnlineLearning.MVC.Data.Migrations
 
             modelBuilder.Entity("OnlineLearning.Entity.Entities.ProgressTracking", b =>
                 {
-                    b.Property<int>("ProgressTrackingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProgressTrackingId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CompletionPercentage")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                    b.Property<int>("AssignmentId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("CompletionPercentage")
+                        .HasColumnType("float");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
+
+                    b.Property<int>("EnrollmentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ProgressTrackingId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignmentId");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("EnrollmentId");
 
                     b.HasIndex("UserId");
 
@@ -400,6 +436,17 @@ namespace OnlineLearning.MVC.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OnlineLearning.Entity.Entities.Assignment", b =>
+                {
+                    b.HasOne("OnlineLearning.Entity.Entities.Course", "Course")
+                        .WithMany("Assignments")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("OnlineLearning.Entity.Entities.Course", b =>
                 {
                     b.HasOne("OnlineLearning.Entity.Entities.ApplicationUser", "Instructor")
@@ -432,19 +479,35 @@ namespace OnlineLearning.MVC.Data.Migrations
 
             modelBuilder.Entity("OnlineLearning.Entity.Entities.ProgressTracking", b =>
                 {
+                    b.HasOne("OnlineLearning.Entity.Entities.Assignment", "Assignment")
+                        .WithMany("ProgressTrackings")
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("OnlineLearning.Entity.Entities.Course", "Course")
-                        .WithMany()
+                        .WithMany("ProgressTrackings")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("OnlineLearning.Entity.Entities.Enrollment", "Enrollment")
+                        .WithMany("ProgressTrackings")
+                        .HasForeignKey("EnrollmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("OnlineLearning.Entity.Entities.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.Navigation("Assignment");
+
                     b.Navigation("Course");
+
+                    b.Navigation("Enrollment");
 
                     b.Navigation("User");
                 });
@@ -456,9 +519,23 @@ namespace OnlineLearning.MVC.Data.Migrations
                     b.Navigation("Enrollments");
                 });
 
+            modelBuilder.Entity("OnlineLearning.Entity.Entities.Assignment", b =>
+                {
+                    b.Navigation("ProgressTrackings");
+                });
+
             modelBuilder.Entity("OnlineLearning.Entity.Entities.Course", b =>
                 {
+                    b.Navigation("Assignments");
+
                     b.Navigation("Enrollments");
+
+                    b.Navigation("ProgressTrackings");
+                });
+
+            modelBuilder.Entity("OnlineLearning.Entity.Entities.Enrollment", b =>
+                {
+                    b.Navigation("ProgressTrackings");
                 });
 #pragma warning restore 612, 618
         }
