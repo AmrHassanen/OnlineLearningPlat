@@ -12,8 +12,8 @@ using OnlineLearning.Infrastructure.Data;
 namespace OnlineLearning.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241006000616_EnableCascadeDeleteForAssignments")]
-    partial class EnableCascadeDeleteForAssignments
+    [Migration("20241006115612_CreateSchemaDatabase")]
+    partial class CreateSchemaDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,21 +54,21 @@ namespace OnlineLearning.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5b1b5030-acc6-40a9-ad7d-72334d2e9af5",
+                            Id = "55f69c11-ca26-482b-8fc8-ea27f6c62418",
                             ConcurrencyStamp = "1",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "f69570b0-1b58-47b8-90bb-f591dc5eb0e4",
+                            Id = "67ba2843-535e-4cbb-80f0-ad23c36ce4bc",
                             ConcurrencyStamp = "2",
                             Name = "Instructor",
                             NormalizedName = "INSTRUCTOR"
                         },
                         new
                         {
-                            Id = "379a03af-89d2-453e-a567-266dbdccbdf3",
+                            Id = "1c0c7a42-9f95-485a-adf2-aa882253cb1a",
                             ConcurrencyStamp = "3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineLearning.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class CreateSchemaDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -258,7 +258,7 @@ namespace OnlineLearning.Infrastructure.Migrations
                         column: x => x.AssignmentId,
                         principalTable: "Assignments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProgressTrackings_Courses_CourseId",
                         column: x => x.CourseId,
@@ -277,9 +277,9 @@ namespace OnlineLearning.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "9663b29b-2c94-45e7-9114-699a256c7d8d", "1", "Student", "STUDENT" },
-                    { "a2ab5d0c-f805-41f4-bd81-9293e72b3976", "2", "Instructor", "INSTRUCTOR" },
-                    { "ef95cf67-7d57-4b64-90e9-1dfd81ed7f68", "3", "Admin", "ADMIN" }
+                    { "1c0c7a42-9f95-485a-adf2-aa882253cb1a", "3", "Admin", "ADMIN" },
+                    { "55f69c11-ca26-482b-8fc8-ea27f6c62418", "1", "Student", "STUDENT" },
+                    { "67ba2843-535e-4cbb-80f0-ad23c36ce4bc", "2", "Instructor", "INSTRUCTOR" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -27,4 +27,8 @@
     <ProjectReference Include="..\OnlineLearning.Service\OnlineLearning.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\StaticFiles\" />
+  </ItemGroup>
+
 </Project>
